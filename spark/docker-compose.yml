@@ -1,0 +1,74 @@
+version: '2'
+
+services:
+    master:
+        image: bitnami/spark:2.4.5
+        container_name: master
+        environment:
+            - SPARK_MODE=master
+            - SPARK_RPC_AUTHENTICATION_ENABLED=no
+            - SPARK_RPC_ENCRYPTION_ENABLED=no
+            - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+            - SPARK_SSL_ENABLED=no
+        ports:
+            - '8080:8080'
+        networks:
+            spark-net:
+                ipv4_address: 192.168.5.2
+    worker-1:
+        image: bitnami/spark:2.4.5
+        container_name: worker-1
+        environment:
+            - SPARK_MODE=worker
+            - SPARK_MASTER_URL=spark://192.168.5.2:7077
+            - SPARK_WORKER_MEMORY=1G
+            - SPARK_WORKER_CORES=1
+            - SPARK_RPC_AUTHENTICATION_ENABLED=no
+            - SPARK_RPC_ENCRYPTION_ENABLED=no
+            - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+            - SPARK_SSL_ENABLED=no
+        networks:
+            spark-net:
+                ipv4_address: 192.168.5.3
+        depends_on: 
+            - master
+    worker-2:
+        image: bitnami/spark:2.4.5
+        container_name: worker-2
+        environment:
+            - SPARK_MODE=worker
+            - SPARK_MASTER_URL=spark://192.168.5.2:7077
+            - SPARK_WORKER_MEMORY=1G
+            - SPARK_WORKER_CORES=1
+            - SPARK_RPC_AUTHENTICATION_ENABLED=no
+            - SPARK_RPC_ENCRYPTION_ENABLED=no
+            - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+            - SPARK_SSL_ENABLED=no
+        networks:
+            spark-net:
+                ipv4_address: 192.168.5.4
+        depends_on: 
+            - master
+    worker-3:
+        image: bitnami/spark:2.4.5
+        container_name: worker-3
+        environment:
+            - SPARK_MODE=worker
+            - SPARK_MASTER_URL=spark://192.168.5.2:7077
+            - SPARK_WORKER_MEMORY=1G
+            - SPARK_WORKER_CORES=1
+            - SPARK_RPC_AUTHENTICATION_ENABLED=no
+            - SPARK_RPC_ENCRYPTION_ENABLED=no
+            - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+            - SPARK_SSL_ENABLED=no
+        networks:
+            spark-net:
+                ipv4_address: 192.168.5.5
+        depends_on: 
+            - master
+networks:
+    spark-net:
+        ipam:
+            driver: default
+            config:
+                - subnet: 192.168.5.0/26
