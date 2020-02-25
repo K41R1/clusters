@@ -1,0 +1,77 @@
+version: '2.2'
+services:
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.5.2
+    container_name: kibana
+    volumes:
+      - ./config/kibana.yml:/usr/share/kibana/config/kibana.yml
+    networks:
+      elastic:
+        ipv4_address: 192.168.10.5
+    depends_on:
+      - "es01"
+      - "es02"
+      - "es03"
+  es01:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.2
+    container_name: es01
+    environment:
+      - "ES_JAVA_OPTS=-Xms1G -Xmx1G"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./config/es01.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - data01:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+    networks:
+      elastic:
+        ipv4_address: 192.168.10.2
+  es02:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.2
+    container_name: es02
+    environment:
+      - "ES_JAVA_OPTS=-Xms1G -Xmx1G"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./config/es02.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - data02:/usr/share/elasticsearch/data
+    networks:
+      elastic:
+        ipv4_address: 192.168.10.3
+  es03:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.2
+    container_name: es03
+    environment:
+      - "ES_JAVA_OPTS=-Xms1G -Xmx1G"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./config/es03.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - data03:/usr/share/elasticsearch/data
+    networks:
+      elastic:
+        ipv4_address: 192.168.10.4
+
+volumes:
+  data01:
+    driver: local
+  data02:
+    driver: local
+  data03:
+    driver: local
+
+networks:
+  elastic:
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.10.0/29
+        
