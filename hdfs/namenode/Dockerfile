@@ -1,6 +1,6 @@
-FROM hdfs:2.9.2
+FROM kerios/hdfs:2.9.2
 
-MAINTAINER kerios <abidikhairi32@gmail.com>
+LABEL author="kerios <abidikhairi32@gmail.com>"
 
 HEALTHCHECK CMD curl -f http://localhost:50070/ || exit 1
 
