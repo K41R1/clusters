@@ -7,11 +7,13 @@ ENV JAVA_HOME=/usr/lib/jvm/java-1.8.0
 COPY hadoop.tar.gz /tmp
 
 RUN yum install -y -q net-tools \
-      curl \
-      which \
-      netcat \
-      perl \
-      gnupg \
+    nc \    
+    curl \
+    which \
+    netcat \
+    perl \
+    gnupg 
+
 RUN mkdir $HADOOP_HOME/logs \
     && yum clean all \
     && tar -xzvf /tmp/hadoop.tar.gz -C /opt/ \
