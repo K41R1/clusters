@@ -1,4 +1,4 @@
-version: "3"
+version: "3.7"
 
 services:
     namenode:
@@ -8,11 +8,16 @@ services:
       ports:
         - 9870:9870
         - 9000:9000
+        - 50070:50070
       environment:
         - CLUSTER_NAME=test
+      env_file: 
+        - ./hadoop.env
     datanode:
       image: hdfs-datanode:2.9.2
       container_name: datanode
       restart: always
       environment:
         SERVICE_PRECONDITION: "namenode:9000"
+      env_file: 
+        - ./hadoop.env

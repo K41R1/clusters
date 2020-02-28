@@ -2,7 +2,7 @@ FROM kerios/hdfs:2.9.2
 
 LABEL author="kerios <abidikhairi32@gmail.com>"
 
-HEALTHCHECK CMD curl -f http://localhost:500575/ || exit 1
+HEALTHCHECK CMD curl -f http://localhost:50010/ || exit 1
 
 ENV HDFS_CONF_dfs_datanode_data_dir=file:///hadoop/dfs/data
 RUN mkdir -p /hadoop/dfs/data
