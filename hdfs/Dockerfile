@@ -1,5 +1,5 @@
 FROM nimmis/java-centos:openjdk-8-jdk
-MAINTAINER kerios <abidikhairi32@gmail.com>
+LABEL author="kerios <abidikhairi32@gmail.com>"
 
 ENV HADOOP_VERSION=2.9.2
 ENV JAVA_HOME=/usr/lib/jvm/java-1.8.0
