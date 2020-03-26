@@ -1,0 +1,149 @@
+version: '3.7'
+
+services:
+  solr1:
+    image: solr:8.4
+    container_name: solr1
+    ports:
+     - "8981:8983"
+    environment:
+      - ZK_HOST=zoo1:2181,zoo2:2181,zoo3:2181
+    volumes:
+      - solr1:/var/solr
+    networks:
+      solr-net:
+        ipv4_address: 192.168.50.5
+    depends_on:
+      - zoo1
+      - zoo2
+      - zoo3
+  solr2:
+    image: solr:8.4
+    container_name: solr2
+    ports:
+     - "8982:8983"
+    environment:
+      - ZK_HOST=zoo1:2181,zoo2:2181,zoo3:2181
+    volumes:
+      - solr2:/var/solr
+    networks:
+      solr-net:
+        ipv4_address: 192.168.50.6
+    depends_on:
+      - zoo1
+      - zoo2
+      - zoo3
+  solr3:
+    image: solr:8.4
+    container_name: solr3
+    ports:
+     - "8983:8983"
+    environment:
+      - ZK_HOST=zoo1:2181,zoo2:2181,zoo3:2181
+    volumes:
+      - solr3:/var/solr
+    networks:
+      solr-net:
+        ipv4_address: 192.168.50.7
+    depends_on:
+      - zoo1
+      - zoo2
+      - zoo3
+  solr4:
+    image: solr:8.4
+    container_name: solr4
+    ports:
+     - "8984:8983"
+    environment:
+      - ZK_HOST=zoo1:2181,zoo2:2181,zoo3:2181
+    volumes:
+      - solr4:/var/solr
+    networks:
+      solr-net:
+        ipv4_address: 192.168.50.8
+    depends_on:
+      - zoo1
+      - zoo2
+      - zoo3
+  solr5:
+    image: solr:8.4
+    container_name: solr5
+    ports:
+     - "8985:8983"
+    environment:
+      - ZK_HOST=zoo1:2181,zoo2:2181,zoo3:2181
+    volumes:
+      - solr5:/var/solr
+    networks:
+      solr-net:
+        ipv4_address: 192.168.50.9
+    depends_on:
+      - zoo1
+      - zoo2
+      - zoo3    
+  zoo1:
+    image: 'zookeeper:3.5'
+    container_name: zoo1
+    ports:
+      - '2181:2181'
+    hostname: zoo1
+    volumes:
+      - ./conf/zoo.cfg:/conf/zoo.cfg
+      - ./data/zk1:/data
+    environment:
+      ZOO_MY_ID: 1
+      ZOO_SERVERS: 'server.1=192.168.50.2:2888:3888;2181 server.2=192.168.50.3:2888:3888;2181 server.3=192.168.50.4:2888:3888;2181'
+      ZOO_ADMINSERVER_ENABLED: 'false'
+      ZOO_LOG4J_PROP: "INFO,ROLLINGFILE"
+    networks:
+      solr-net:
+        ipv4_address: 192.168.50.2
+  zoo2:
+    image: 'zookeeper:3.5'
+    container_name: zoo2
+    ports:
+      - '2182:2181'
+    hostname: zoo2
+    volumes:
+      - ./conf/zoo.cfg:/conf/zoo.cfg
+      - ./data/zk2:/data
+    environment:
+      ZOO_MY_ID: 2
+      ZOO_SERVERS: 'server.1=192.168.50.2:2888:3888;2181 server.2=192.168.50.3:2888:3888;2181 server.3=192.168.50.4:2888:3888;2181'
+      ZOO_ADMINSERVER_ENABLED: 'false'
+      ZOO_LOG4J_PROP: "INFO,ROLLINGFILE"
+    networks:
+      solr-net:
+        ipv4_address: 192.168.50.3
+  zoo3:
+    image: 'zookeeper:3.5'
+    container_name: zoo3
+    hostname: zoo3
+    ports:
+      - '2183:2181'
+    hostname: zoo3
+    volumes:
+      - ./conf/zoo.cfg:/conf/zoo.cfg
+      - ./data/zk3:/data
+    environment:
+      ZOO_MY_ID: 3
+      ZOO_SERVERS: 'server.1=192.168.50.2:2888:3888;2181 server.2=192.168.50.3:2888:3888;2181 server.3=192.168.50.4:2888:3888;2181'
+      ZOO_ADMINSERVER_ENABLED: 'false'
+      ZOO_LOG4J_PROP: "INFO,ROLLINGFILE"
+    networks:
+      solr-net:
+        ipv4_address: 192.168.50.4
+
+networks:
+  solr-net:
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.50.0/27
+
+volumes:
+  solr1:
+  solr2:
+  solr3:
+  solr4:
+  solr5:
